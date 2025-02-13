@@ -1,39 +1,34 @@
 class Products:
     total_amount = 0
-    def __init__(self, name, price, quantity):
-        if len(name.strip()) == 0:
-            raise NameError("Sorry, name can not be empty")
+    _id_counter = 0
 
+    def __init__(self, name: str, price: float, quantity: int):
+        if not name.strip():
+            raise ValueError("Name cannot be empty")
         if price < 0:
-            raise ValueError("Price can not be negative")
+            raise ValueError("Price cannot be negative")
         if quantity < 0:
-            raise ValueError("Quantity can not be negative")
-
-
-        if quantity == 0:
-            self.active = False
-        else:
-            self.active = True
-            Products.total_amount += quantity
-            self.quantity = quantity
+            raise ValueError("Quantity cannot be negative")
 
         self.name = name
         self.price = price
+        self.quantity = quantity
+        self.active = quantity > 0
+        self.id = Products._id_counter
 
+        Products.total_amount += quantity
+        Products._id_counter += 1
 
     def get_quantity(self) -> int:
         return self.quantity
 
-    def set_quantity(self, quantity):
-        if quantity >= 0:
-            if quantity < self.quantity:
-                Products.total_amount -= quantity
-                self.quantity = quantity
-            else:
-                Products.total_amount += quantity
-                self.quantity = quantity
-        else:
-            raise ValueError("Quantity can not be negative")
+    def set_quantity(self, quantity: int):
+        if quantity < 0:
+            raise ValueError("Quantity cannot be negative")
+
+        Products.total_amount += quantity - self.quantity
+        self.quantity = quantity
+        self.active = quantity > 0
 
     def is_active(self) -> bool:
         return self.active
@@ -45,12 +40,15 @@ class Products:
         self.active = False
 
     def show(self) -> str:
-        print(f"Name:{self.name}, Price:{self.price}, Quantity: {self.quantity}")
+        return f"Name: {self.name}, Price: {self.price}, Quantity: {self.quantity}"
 
-    def buy(self, quantity) -> float:
+    def buy(self, quantity: int) -> float:
         if quantity <= 0:
-            raise ValueError("You can not by 0 or negative amount!!!")
+            raise ValueError("You cannot buy 0 or a negative amount!")
+        if quantity > self.quantity:
+            raise ValueError("Not enough stock available!")
+
         self.quantity -= quantity
         Products.total_amount -= quantity
-        return float(quantity * self.price)
 
+        return quantity * self.price

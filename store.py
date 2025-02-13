@@ -1,11 +1,11 @@
-from itertools import product
 from typing import List
+
 class Store:
 
     def __init__(self, products):
         self.total_products = []
-        for product in products:
-            self.total_products.append(product)
+        for _product in products:
+            self.total_products.append(_product)
 
     def add_product(self, name):
         self.total_products.append(name)
@@ -18,15 +18,23 @@ class Store:
             total += name.quantity
         return total
     def get_all_products(self) -> List:
-        return [product for product in self.total_products if product.active == True]
+        return [_product for _product in self.total_products if _product.active == True]
 
     def order(self, shopping_list) -> float:
         total_price = 0
         for name, quantity in shopping_list:
-            if quantity < name.quantity:
-                total_price += name.price * quantity
-            else:
-                raise ValueError(f"We dont have {quantity} for {name.name}")
+            for _product in self.total_products:
+                if _product.name == name:
+
+
+
+
+
+
+                    total_price += _product.buy(quantity)
+
+
+
         return float(total_price)
 
 
