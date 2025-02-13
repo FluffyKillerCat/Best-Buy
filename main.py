@@ -1,16 +1,14 @@
-# This is a sample Python script.
+from products import Products
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+bose = Products("Bose QuietComfort Earbuds", price=250, quantity=500)
+mac = Products("MacBook Air M2", price=1450, quantity=100)
 
+print(bose.buy(50))
+print(mac.buy(100))
+print(mac.is_active())
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+bose.show()
+mac.show()
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+bose.set_quantity(1000)
+bose.show()
